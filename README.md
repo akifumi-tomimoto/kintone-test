@@ -23,7 +23,7 @@
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/b6acb83c-7d6f-4610-a11d-b036a27c6ffa)
 
 
-## 検証環境での動作確認
+## 検証環境へのデプロイフロー
 - Github Pagesの利用を検討。  
 以下画像のような設定でGithub Pagesからファイルをホストティングできるようにする  
 画像はmainブランチを設定しているが、stagingブランチ（検証環境用ブランチ）を指定したほうが良い
@@ -32,4 +32,7 @@
 - デプロイされたURL上のファイルを検証環境動作確認用のスペース・アプリで指定できる
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/e252a076-36fd-42b0-8aa5-6e7e0e14ebf1)
 
+## 本番環境へのデプロイフロー
+- 坂野さんからサンプルを共有いただいたので参考に
+- https://github.com/tbanno-asnet/kintone-customize-feasibility
 
