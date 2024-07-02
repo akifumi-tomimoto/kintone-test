@@ -1,7 +1,7 @@
 import {execSync} from 'child_process';
 import {glob} from 'glob';
 
-const command = `npx kintone-customize-uploader --base-url $npm_package_config_baseurl --username ${secrets.ENV_USER_NAME} --password ${secrets.ENV_USER_PASSWORD} `;
+const command = `npx kintone-customize-uploader --base-url $npm_package_config_baseurl --username $npm_config_username --password $npm_config_password `;
 const entries =
   process.argv.slice(2).length > 0
     ? process.argv.slice(2)
