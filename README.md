@@ -35,4 +35,6 @@
 ## 本番環境へのデプロイフロー
 - 坂野さんからサンプルを共有いただいたので参考に
 - https://github.com/tbanno-asnet/kintone-customize-feasibility
+- 実際は複数アプリに対して複数ファイルをアップロードする必要があるはずなので下記も参照
+- https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/javascript-customize-middle-class-bulk-upload/
 
