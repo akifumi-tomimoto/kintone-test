@@ -8,7 +8,7 @@
         "build": "webpack",
         "lint": "eslint src/**/*.js",
         "fix": "eslint src/**/*.js --fix",
-        "upload": "babel-node --presets @babel/env -r dotenv/config uploader.js"
+        "upload": "babel-node --presets @babel/env -r dotenv/config uploader.js $npm_package_config_baseurl $npm_config_username $npm_config_password"
     },
     "keywords": [
         "kintone",
