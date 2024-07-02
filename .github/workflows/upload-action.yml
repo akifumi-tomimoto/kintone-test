@@ -12,5 +12,6 @@ jobs:
         with:
           node-version: '20'
       - run: | 
+          npm install
           npx webpack --mode production
           npm run upload
