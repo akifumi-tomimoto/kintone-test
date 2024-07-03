@@ -50,33 +50,35 @@
 
 ## 開発の流れ
 ### 前提条件
-- kintoneのドメイン単位で1顧客となる？それともスペース単位？
+- kintoneのドメイン単位で1顧客となるを想定
 
 ### 開発手順
-- 要件に従って、kintoneアプリ単位の機能開発を行う想定
+- 要件に従って、kintoneアプリ単位の機能開発を行う
 - src/apps/{アプリ英名}配下にindex.jsとしてjavascriptファイルを用意し、対象アプリを制御する処理を記述していく
 - 共通的な処理はsrc/apps/commonに記述（前述のindex.jsにimportして利用できる）
 - 動作確認を行う際は、webpackにまとめたファイルのパスをローカル開発動作確認用のアプリの「URL指定で追加」に指定する
   - webpackへのまとめ方は後述
 ### webpackへのまとめ方
+- Visual Studio Codeのターミナルから`npx webpack --mode production`コマンドを実行するとdist配下にwebpackとしてまとめられたファイルが出力される（ファイル名はappのディレクトリ名準拠）
+- Visual Studio CodeでLiveServerを起動し、出力されたファイルパスをローカル開発動作確認用アプリの「URL指定で追加」に指定する
+![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/f35266e1-3262-4b5f-ab82-231f1d0507b0)
+- 指定後、アプリで動作確認を行う
+
+### customize-uploaderによる自動デプロイ
 - src/apps/{アプリ英名}配下に以下のような形式の`customize-manifest.json`を用意する
 ```json
 {
-  "app": "335", // ローカル開発動作確認用の対象アプリIDを指定。自動デプロイ時もこのapp_idが参照されて対象のアプリへアップロードされる
+  "app": "335",                このapp_idが参照されて対象アプリへアップロードされる
   "scope": "ALL",
-  "desktop": {
-    "js": ["dist/app1.js"], // src/apps/app1配下のファイルをまとめて、dist/app1.jsとして出力する
+  "desktop": {                 「JavaScript/CSSでカスタマイズ」の「PC用のJavaScript/CSS」で指定したいファイルパスを記述
+    "js": ["dist/app1.js"],
     "css": []
   },
-  "mobile": {
+  "mobile": {                  「JavaScript/CSSでカスタマイズ」の「スマートフォン用のJavaScript」として対象パスのファイルをアップロードする
     "js": []
   }
 }
 ```
-- Visual Studio Codeのターミナルから`npx webpack --mode production`コマンドを実行するとdist配下にwebpackとしてまとめられたファイルが出力される
-- Visual Studio CodeでLive Serverを起動し、出力されたファイルパスをローカル開発動作確認用アプリの「URL指定で追加」に指定する
-![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/f35266e1-3262-4b5f-ab82-231f1d0507b0)
-- 指定後、アプリで動作確認を行う
 
 ## 検証環境へのデプロイフロー
 - Github Pagesの利用を検討。  
