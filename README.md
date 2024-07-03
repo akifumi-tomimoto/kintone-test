@@ -1,9 +1,34 @@
 # kintone-test
 - テスト用のリポジトリですがメモ書きで色々書いていきます
 
+## リポジトリ構成
+```
+.
+├── .github/
+│   ├── workflows/
+│   │   └── upload-action.yml           リポジトリpush時のgithub actions設定を記述
+│   └── pull_request_template.md        Pull Request作成時の初期テンプレートを記述
+├── src/
+│   ├── apps/                           javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
+│   │   ├── app1/                       ディレクトリ名はアプリが特定できるような名称で定義すること
+│   │   │   ├── index.js                kintoneアプリ単位のjavascript制御を記述
+│   │   │   └── customize-manifest.js   kintoneカスタマイズのCSSやJavaScriptファイルをkintoneへ適用できるcustomize-uploaderの設定を記述
+│   │   └── app2/
+│   │       ├── index.js
+│   │       └── customize-manifest.js
+│   └── common/
+│       └── common.js                   全アプリ共通で利用する処理がある場合はこちらで管理する（各index.jsではimportで利用する）
+├── .gitignore                          ここに記述されたファイルパターンやディレクトリはgitのトラッキング対象外になります（例）buildされたdistディレクトリやnode_modulesはトラッキングの必要がないので除外
+├── README.md                           リポジトリの利用方法について記載
+├── package-lock.json
+├── package.json                        Node.jsプロジェクトにおける依存関係管理やスクリプトの定義に必要なファイルです。npm install時に参照されます
+├── uploader.js                         対象アプリへjavascript, cssのファイルアップロードを行います
+└── webpack.config.js                   webpackの設定を記述
+```
+
 ## 事前準備
 ### githubアカウントの作成
-- WIP...
+- 各プロジェクトの発行手順に準拠
 
 ### 開発ツールのインストール
 - [Visual Studio Code](https://code.visualstudio.com/)
@@ -37,7 +62,7 @@
 - src/apps/{アプリ英名}配下に以下のような形式の`customize-manifest.json`を用意する
 ```json
 {
-  "app": "335", // ローカル開発動作確認用の対象アプリIDを指定
+  "app": "335", // ローカル開発動作確認用の対象アプリIDを指定。自動デプロイ時もこのapp_idが参照されて対象のアプリへアップロードされる
   "scope": "ALL",
   "desktop": {
     "js": ["dist/app1.js"], // src/apps/app1配下のファイルをまとめて、dist/app1.jsとして出力する
