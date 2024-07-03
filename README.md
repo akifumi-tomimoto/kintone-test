@@ -22,6 +22,8 @@
 ※Live Serverの設定を有効にしていないと参照できないので注意
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/b6acb83c-7d6f-4610-a11d-b036a27c6ffa)
 
+## 開発の流れ
+- WIP...
 
 ## 検証環境へのデプロイフロー
 - Github Pagesの利用を検討。  
