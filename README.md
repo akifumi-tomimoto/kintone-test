@@ -12,10 +12,10 @@
 │   ├── apps/                           javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
 │   │   ├── app1/                       ディレクトリ名はアプリが特定できるような名称で定義すること
 │   │   │   ├── index.js                kintoneアプリ単位のjavascript制御を記述
-│   │   │   └── customize-manifest.js   kintoneカスタマイズのCSSやJavaScriptファイルをkintoneへ適用できるcustomize-uploaderの設定を記述
+│   │   │   └── customize-manifest.json kintoneカスタマイズのCSSやJavaScriptファイルをkintoneへ適用できるcustomize-uploaderの設定を記述
 │   │   └── app2/
 │   │       ├── index.js
-│   │       └── customize-manifest.js
+│   │       └── customize-manifest.json
 │   └── common/
 │       └── common.js                   全アプリ共通で利用する処理がある場合はこちらで管理する（各index.jsではimportで利用する）
 ├── .gitignore                          ここに記述されたファイルパターンやディレクトリはgitのトラッキング対象外になります（例）buildされたdistディレクトリやnode_modulesはトラッキングの必要がないので除外
