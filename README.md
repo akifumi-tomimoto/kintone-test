@@ -1,9 +1,34 @@
 # kintone-test
 - テスト用のリポジトリですがメモ書きで色々書いていきます
 
+## リポジトリ構成
+```
+.
+├── .github/
+│   ├── workflows/
+│   │   └── upload-action.yml           リポジトリpush時のgithub actions設定を記述
+│   └── pull_request_template.md        Pull Request作成時の初期テンプレートを記述
+├── src/
+│   ├── apps/                           javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
+│   │   ├── app1/                       ディレクトリ名はアプリが特定できるような名称で定義すること
+│   │   │   ├── index.js                kintoneアプリ単位のjavascript制御を記述
+│   │   │   └── customize-manifest.js   kintoneカスタマイズのCSSやJavaScriptファイルをkintoneへ適用できるcustomize-uploaderの設定を記述
+│   │   └── app2/
+│   │       ├── index.js
+│   │       └── customize-manifest.js
+│   └── common/
+│       └── common.js                   全アプリ共通で利用する処理がある場合はこちらで管理する（各index.jsではimportで利用する）
+├── .gitignore                          ここに記述されたファイルパターンやディレクトリはgitのトラッキング対象外になります（例）buildされたdistディレクトリやnode_modulesはトラッキングの必要がないので除外
+├── README.md                           リポジトリの利用方法について記載
+├── package-lock.json
+├── package.json                        Node.jsプロジェクトにおける依存関係管理やスクリプトの定義に必要なファイルです。npm install時に参照されます
+├── uploader.js                         対象アプリへjavascript, cssのファイルアップロードを行います
+└── webpack.config.js                   webpackの設定を記述
+```
+
 ## 事前準備
 ### githubアカウントの作成
-- WIP...
+- 各プロジェクトの発行手順に準拠
 
 ### 開発ツールのインストール
 - [Visual Studio Code](https://code.visualstudio.com/)
@@ -12,6 +37,7 @@
 - ローカルPCのディレクトリに`C:\git-project`のようなディレクトリを作成し、Visual Studio Codeから作成したディレクトリ（フォルダ）を開く
 - `git clone -b develop https://github.com/akifumi-tomimoto/kintone-test.git`コマンドをVisual Studio CodeのTERMINALから実行する
 - ローカル環境にdevelopブランチの内容が展開される
+- npm installを行っておく
 
 ### ローカル環境のファイルをkintoneから参照できるように設定
 - kintoneカスタマイズはURLでのJavaScriptファイルの登録ができます。  
@@ -22,6 +48,35 @@
 ※Live Serverの設定を有効にしていないと参照できないので注意
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/b6acb83c-7d6f-4610-a11d-b036a27c6ffa)
 
+## 開発の流れ
+### 前提条件
+- kintoneのドメイン単位で1顧客となる？それともスペース単位？
+
+### 開発手順
+- 要件に従って、kintoneアプリ単位の機能開発を行う想定
+- src/apps/{アプリ英名}配下にindex.jsとしてjavascriptファイルを用意し、対象アプリを制御する処理を記述していく
+- 共通的な処理はsrc/apps/commonに記述（前述のindex.jsにimportして利用できる）
+- 動作確認を行う際は、webpackにまとめたファイルのパスをローカル開発動作確認用のアプリの「URL指定で追加」に指定する
+  - webpackへのまとめ方は後述
+### webpackへのまとめ方
+- src/apps/{アプリ英名}配下に以下のような形式の`customize-manifest.json`を用意する
+```json
+{
+  "app": "335", // ローカル開発動作確認用の対象アプリIDを指定。自動デプロイ時もこのapp_idが参照されて対象のアプリへアップロードされる
+  "scope": "ALL",
+  "desktop": {
+    "js": ["dist/app1.js"], // src/apps/app1配下のファイルをまとめて、dist/app1.jsとして出力する
+    "css": []
+  },
+  "mobile": {
+    "js": []
+  }
+}
+```
+- Visual Studio Codeのターミナルから`npx webpack --mode production`コマンドを実行するとdist配下にwebpackとしてまとめられたファイルが出力される
+- Visual Studio CodeでLive Serverを起動し、出力されたファイルパスをローカル開発動作確認用アプリの「URL指定で追加」に指定する
+![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/f35266e1-3262-4b5f-ab82-231f1d0507b0)
+- 指定後、アプリで動作確認を行う
 
 ## 検証環境へのデプロイフロー
 - Github Pagesの利用を検討。  
