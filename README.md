@@ -35,18 +35,9 @@
 
 ### git cloneの実行
 - ローカルPCのディレクトリに`C:\git-project`のようなディレクトリを作成し、Visual Studio Codeから作成したディレクトリ（フォルダ）を開く
-- `git clone -b develop https://github.com/akifumi-tomimoto/kintone-test.git`コマンドをVisual Studio CodeのTERMINALから実行する
+- `git clone https://github.com/akifumi-tomimoto/kintone-test.git`コマンドをVisual Studio Codeのターミナルから実行する
 - ローカル環境にdevelopブランチの内容が展開される
 - npm installを行っておく
-
-### ローカル環境のファイルをkintoneから参照できるように設定
-- kintoneカスタマイズはURLでのJavaScriptファイルの登録ができます。  
-この設定を使って自分の開発環境のURL（localhost）を登録します。  
-そのままではlocalhostはサーバーではないので、JavaScript/CSSファイルを配信するのにLiveServerの機能を使います。
-- [詳細はここを参照](https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/use-visual-studio-code-live-server-extension/)
-- kintone側はローカル環境動作確認用のスペース・アプリに対して、localhostのファイル（cloneで取得したファイルやローカルで追加・更新したファイル）を参照するよう指定しておく  
-※Live Serverの設定を有効にしていないと参照できないので注意
-![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/b6acb83c-7d6f-4610-a11d-b036a27c6ffa)
 
 ## 開発の流れ
 ### 前提条件
@@ -58,6 +49,16 @@
 - 共通的な処理はsrc/apps/commonに記述（前述のindex.jsにimportして利用できる）
 - 動作確認を行う際は、webpackにまとめたファイルのパスをローカル開発動作確認用のアプリの「URL指定で追加」に指定する
   - webpackへのまとめ方は後述
+
+### ローカル環境のファイルをkintoneから参照できるように設定
+- kintoneカスタマイズはURLでのJavaScriptファイルの登録ができます。  
+この設定を使って自分の開発環境のURL（localhost）を登録します。  
+そのままではlocalhostはサーバーではないので、JavaScript/CSSファイルを配信するのにLiveServerの機能を使います。
+- [詳細はここを参照](https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/use-visual-studio-code-live-server-extension/)
+- kintone側はローカル環境動作確認用のスペース・アプリに対して、localhostのファイル（cloneで取得したファイルやローカルで追加・更新したファイル）を参照するよう指定しておく  
+※Live Serverの設定を有効にしていないと参照できないので注意
+![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/b6acb83c-7d6f-4610-a11d-b036a27c6ffa)
+
 ### webpackへのまとめ方
 - Visual Studio Codeのターミナルから`npx webpack --mode production`コマンドを実行するとdist配下にwebpackとしてまとめられたファイルが出力される（ファイル名はappのディレクトリ名準拠）
 - Visual Studio CodeでLiveServerを起動し、出力されたファイルパスをローカル開発動作確認用アプリの「URL指定で追加」に指定する
@@ -90,8 +91,30 @@
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/e252a076-36fd-42b0-8aa5-6e7e0e14ebf1)
 
 ## 本番環境へのデプロイフロー
-- 坂野さんからサンプルを共有いただいたので参考に
-- https://github.com/tbanno-asnet/kintone-customize-feasibility
-- 実際は複数アプリに対して複数ファイルをアップロードする必要があるはずなので下記も参照
-- https://cybozu.dev/ja/kintone/tips/development/customize/development-know-how/javascript-customize-middle-class-bulk-upload/
+### 事前準備
+- packagage.jsonのconfig.baseurlにkintoneのドメインを追加
+- secretsにENV_USER_NAMEとENV_USER_PASSWORDを定義する（対象アプリへのファイルアップロードにkintoneアカウントとパスワードが必要）
+### デプロイフロー定義
+- upload-action.ymlに定義
+- mainブランチへのpushでjobsが実行
+- 具体的な処理としてはsrc/apps配下のファイルをwebpackし、uploader.jsが実行される
+```
+name: upload-action
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: | 
+          npm install
+          npx webpack --mode production
+          npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }}
+```
 
