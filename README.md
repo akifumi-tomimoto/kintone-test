@@ -8,6 +8,10 @@
 │   ├── workflows/
 │   │   └── upload-action.yml           リポジトリpush時のgithub actions設定を記述
 │   └── pull_request_template.md        Pull Request作成時の初期テンプレートを記述
+├── kintone-env                         環境（スペース）で異なるkintoneの内部値などを定義 webpack生成時に環境ごとのファイルを参照する仕組みとする
+│   ├── dev_env_var.js                  開発環境スペースに合わせたkintoneアプリIDなどを定義
+│   ├── prd_env_var.js                  本番環境スペースに合わせたkintoneアプリIDなどを定義
+│   └── stg_env_var.js                  検証環境スペースに合わせたkintoneアプリIDなどを定義
 ├── src/
 │   ├── apps/                           javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
 │   │   ├── app1/                       ディレクトリ名はアプリが特定できるような名称で定義すること
@@ -41,7 +45,7 @@
 
 ## 開発の流れ
 ### 前提条件
-- kintoneのドメイン単位で1顧客となるを想定
+- kintoneのドメイン単位で1顧客となる想定
 
 ### 開発手順
 - 要件に従って、kintoneアプリ単位の機能開発を行う
@@ -64,6 +68,14 @@
 - Visual Studio CodeでLiveServerを起動し、出力されたファイルパスをローカル開発動作確認用アプリの「URL指定で追加」に指定する
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/f35266e1-3262-4b5f-ab82-231f1d0507b0)
 - 指定後、アプリで動作確認を行う
+
+#### 環境（スペース）ごとの環境変数利用について
+- kintone開発を進めるにあたって、役割は同じでも開発環境の違いからアプリIDが異なるケースについて、環境に応じたアプリIDを自動的に管理できるような仕組みとしたい
+- kintone-envディレクトリに環境ごとの定義ファイルを用意し、webpack作成時にenvを指定することで環境に応じたアプリID定義がimportされるようにする
+- 以下画像のように、各アプリのindex.jsに`userEnv`をimportすることで環境に応じた定義が参照可能となる  
+dev_env_var.jsの内容をimportしたい場合は`npm run dev`（もしくは`npx webpack --mode production`でもデフォルトのenvをdevとしている）でwebpackを生成する 
+![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/ca352ffd-d73f-4be3-b594-cb99a441e800)
+
 
 ### customize-uploaderによる自動デプロイ
 - src/apps/{アプリ英名}配下に以下のような形式の`customize-manifest.json`を用意する
