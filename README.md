@@ -8,7 +8,7 @@
 │   ├── workflows/
 │   │   └── upload-action.yml           リポジトリpush時のgithub actions設定を記述
 │   └── pull_request_template.md        Pull Request作成時の初期テンプレートを記述
-├── kintone-env                         環境（スペース）で異なるkintoneの内部値などを定義 webpack生成時に環境ごとのファイルを参照する仕組みとする
+├── kintone-env/                        環境（スペース）で異なるkintoneの内部値などを定義 webpack生成時に環境ごとのファイルを参照する仕組みとする
 │   ├── dev_env_var.js                  開発環境スペースに合わせたkintoneアプリIDなどを定義
 │   ├── prd_env_var.js                  本番環境スペースに合わせたkintoneアプリIDなどを定義
 │   └── stg_env_var.js                  検証環境スペースに合わせたkintoneアプリIDなどを定義
