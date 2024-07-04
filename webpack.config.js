@@ -18,7 +18,7 @@ module.exports = (env, argv) => ({
   entry: entries,
   resolve: {
     alias: {
-      userEnv$: path.resolve(__dirname, `.env/${environment}_env_var.js`),
+      userEnv$: path.resolve(__dirname, `kintone-env/${environment}_env_var.js`),
     },
   },
   module: {
