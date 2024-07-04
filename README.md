@@ -126,7 +126,7 @@ jobs:
           node-version: '20'
       - run: | 
           npm install
-          npx webpack --mode production
+          npm run prd
           npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }}
 ```
 
