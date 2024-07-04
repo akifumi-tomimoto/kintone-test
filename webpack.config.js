@@ -3,6 +3,7 @@ const glob = require('glob');
 const {exec} = require('child_process');
 
 const basePath = path.resolve('src', 'apps');
+const environment = process.env.NODE_ENV || 'dev';
 
 // basePath配下の各ディレクトリを複数のentryとする
 const entries = glob.sync('**/index.+(js|ts|tsx)', {cwd: basePath}).reduce(
@@ -15,6 +16,11 @@ const entries = glob.sync('**/index.+(js|ts|tsx)', {cwd: basePath}).reduce(
 
 module.exports = (env, argv) => ({
   entry: entries,
+  resolve: {
+    alias: {
+      userEnv$: path.resolve(__dirname, `.env/${environment}_env_var.js`),
+    },
+  },
   module: {
     rules: [
       {
