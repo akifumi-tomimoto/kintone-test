@@ -1,11 +1,11 @@
 {
-    "app": "335",
-    "scope": "ALL",
-    "desktop": {
-      "js": ["dist/app1.js"],
-      "css": []
-    },
-    "mobile": {
-      "js": []
-    }
+  "app": "335",
+  "scope": "ALL",
+  "desktop": {
+    "js": ["dist/app1.js"],
+    "css": []
+  },
+  "mobile": {
+    "js": []
   }
+}
