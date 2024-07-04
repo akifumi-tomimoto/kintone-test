@@ -118,3 +118,20 @@ jobs:
           npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }}
 ```
 
+### uploader.jsの説明（CopilotChatで生成）
+このJavaScriptコードは、kintone-customize-uploaderを使用して、特定のパターンにマッチするファイルをアップロードするスクリプトです。  
+以下はコードのステップバイステップの説明です：
+
+1. child_processモジュールからexecSync関数をインポートします。
+この関数は、Node.jsの子プロセスを同期的に実行するために使用されます。
+2. globモジュールからglob関数をインポートします。この関数は、ファイルパスのパターンにマッチするファイルを検索するために使用されます。
+3. command変数を定義し、npx kintone-customize-uploaderコマンドにコマンドライン引数から取得したbase-url、username、passwordを追加しています。これは、kintoneのカスタマイズファイルをアップロードするためのコマンドです。
+4. entries変数に、glob.sync関数を使用してsrc/apps/**/customize-manifest.jsonにマッチするファイルのリストを代入します。このパターンは、src/apps/ディレクトリとそのサブディレクトリ内のcustomize-manifest.jsonファイルを対象としています。
+5. entries配列の各ファイルに対して、以下の処理を行うforEachループを実行します：
+   - アップロード中であることを示すメッセージとファイル名をコンソールに出力します。
+   - execSync関数を使用して、command変数にファイルパスを追加したコマンドを実行します。これにより、指定されたファイルがkintoneにアップロードされます。
+   - コマンドの実行結果をコンソールに出力します。
+
+このスクリプトは、kintoneのカスタマイズファイルをバッチでアップロードするために使用され、コマンドラインから実行されることを想定しています。
+コマンドライン引数を通じて、アップロード先のURL、ユーザー名、パスワードを指定します。
+
