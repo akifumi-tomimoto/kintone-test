@@ -107,14 +107,13 @@
 - secretsにENV_USER_NAMEとENV_USER_PASSWORDを定義する（対象アプリへのファイルアップロードにkintoneアカウントとパスワードが必要）
 ### デプロイフロー定義
 - upload-action.ymlに定義
-- mainブランチへのpushでjobsが実行
+- Github Actionsの`run workflow`から実行
 - 具体的な処理としてはsrc/apps配下のファイルをwebpackし、uploader.jsが実行される
 ```
 name: upload-action
-on: 
-  push:
-    branches:
-      - main
+on:
+  workflow_dispatch:
+
 jobs:
   upload:
     runs-on: ubuntu-latest
