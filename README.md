@@ -27,7 +27,7 @@
 ├── package-lock.json
 ├── package.json                        Node.jsプロジェクトにおける依存関係管理やスクリプトの定義に必要なファイルです。npm install時に参照されます
 ├── uploader.js                         対象アプリへjavascript, cssのファイルアップロードを行います
-└── webpack.config.js                   webpackの設定を記述
+└── vite.config.js                      Viteの設定を記述
 ```
 
 ## 事前準備
@@ -51,8 +51,8 @@
 - 要件に従って、kintoneアプリ単位の機能開発を行う
 - src/apps/{アプリ英名}配下にindex.jsとしてjavascriptファイルを用意し、対象アプリを制御する処理を記述していく
 - 共通的な処理はsrc/apps/commonに記述（前述のindex.jsにimportして利用できる）
-- 動作確認を行う際は、webpackにまとめたファイルのパスをローカル開発動作確認用のアプリの「URL指定で追加」に指定する
-  - webpackへのまとめ方は後述
+- 動作確認を行う際は、Viteでまとめたファイルのパスをローカル開発動作確認用のアプリの「URL指定で追加」に指定する
+  - Viteを用いたファイルバンドルは後述
 
 ### ローカル環境のファイルをkintoneから参照できるように設定
 - kintoneカスタマイズはURLでのJavaScriptファイルの登録ができます。  
@@ -63,17 +63,17 @@
 ※Live Serverの設定を有効にしていないと参照できないので注意
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/b6acb83c-7d6f-4610-a11d-b036a27c6ffa)
 
-### webpackへのまとめ方
-- Visual Studio Codeのターミナルから`npx webpack --mode production`コマンドを実行するとdist配下にwebpackとしてまとめられたファイルが出力される（ファイル名はappのディレクトリ名準拠）
+### Viteを用いたファイルバンドル
+- Visual Studio Codeのターミナルから`npm run dev`コマンドを実行するとdist配下にバンドルされたファイルが出力される（ファイル名はappのディレクトリ名準拠）
 - Visual Studio CodeでLiveServerを起動し、出力されたファイルパスをローカル開発動作確認用アプリの「URL指定で追加」に指定する
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/f35266e1-3262-4b5f-ab82-231f1d0507b0)
 - 指定後、アプリで動作確認を行う
 
 #### 環境（スペース）ごとの環境変数利用について
 - kintone開発を進めるにあたって、役割は同じでも開発環境の違いからアプリIDが異なるケースについて、環境に応じたアプリIDを自動的に管理できるような仕組みとしたい
-- kintone-envディレクトリに環境ごとの定義ファイルを用意し、webpack作成時にenvを指定することで環境に応じたアプリID定義がimportされるようにする
-- 以下画像のように、各アプリのindex.jsに`userEnv`をimportすることで環境に応じた定義が参照可能となる  
-dev_env_var.jsの内容をimportしたい場合は`npm run dev`（もしくは`npx webpack --mode production`でもデフォルトのenvをdevとしている）でwebpackを生成する 
+- .envファイルを環境ごとの定義ファイルとして用意し、Viteのファイルバンドル時にenvを指定することで環境に応じたアプリID定義がimportされるようにする
+- 以下画像のように、各アプリのindex.jsに`import.meta.env.{環境変数KEY}`と記述することで環境に応じた定義が参照可能となる  
+ローカル開発時の`.env.local`ファイルの内容をimportしたい場合は`npm run dev`で対象ファイルが参照される 
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/ca352ffd-d73f-4be3-b594-cb99a441e800)
 
 
