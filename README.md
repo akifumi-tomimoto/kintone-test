@@ -108,7 +108,7 @@
 ### デプロイフロー定義
 - upload-action.ymlに定義
 - Github Actionsの`run workflow`から実行
-- 具体的な処理としてはsrc/apps配下のファイルをwebpackし、uploader.jsが実行される
+- 具体的な処理としてはsrc/apps配下のファイルをViteを用いてバンドルし、uploader.jsから対象アプリへアップロードする
 ```
 name: upload-action
 on:
