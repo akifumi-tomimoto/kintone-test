@@ -17,12 +17,6 @@ const entries = glob.sync('**/index.+(js|ts|tsx)', {cwd: basePath}).reduce(
 );
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      // エイリアスのキーを正規表現リテラルで指定し、対応するパスを動的に解決
-      '^/userEnv$': resolve(__dirname, `kintone-env/${environment}_env_var.js`),
-    },
-  },
   build: {
     lib: {
       // 複数のエントリーポイントのディクショナリや配列にもできます
