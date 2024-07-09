@@ -8,10 +8,6 @@
 │   ├── workflows/
 │   │   └── upload-action.yml           リポジトリpush時のgithub actions設定を記述
 │   └── pull_request_template.md        Pull Request作成時の初期テンプレートを記述
-├── kintone-env/                        環境（スペース）で異なるkintoneの内部値などを定義 webpack生成時に環境ごとのファイルを参照する仕組みとする
-│   ├── dev_env_var.js                  開発環境スペースに合わせたkintoneアプリIDなどを定義
-│   ├── prd_env_var.js                  本番環境スペースに合わせたkintoneアプリIDなどを定義
-│   └── stg_env_var.js                  検証環境スペースに合わせたkintoneアプリIDなどを定義
 ├── src/
 │   ├── apps/                           javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
 │   │   ├── app1/                       ディレクトリ名はアプリが特定できるような名称で定義すること
@@ -22,6 +18,8 @@
 │   │       └── customize-manifest.json
 │   └── common/
 │       └── common.js                   全アプリ共通で利用する処理がある場合はこちらで管理する（各index.jsではimportで利用する）
+├── .env.production                     production環境変数について定義 Viteで利用する場合はプレフィックスに`VITE_`を指定して登録する
+├── .env.staging                        staging環境変数について定義 Viteで利用する場合はプレフィックスに`VITE_`を指定して登録する
 ├── .gitignore                          ここに記述されたファイルパターンやディレクトリはgitのトラッキング対象外になります（例）buildされたdistディレクトリやnode_modulesはトラッキングの必要がないので除外
 ├── README.md                           リポジトリの利用方法について記載
 ├── package-lock.json
@@ -73,7 +71,7 @@
 - kintone開発を進めるにあたって、役割は同じでも開発環境の違いからアプリIDが異なるケースについて、環境に応じたアプリIDを自動的に管理できるような仕組みとしたい
 - .envファイルを環境ごとの定義ファイルとして用意し、Viteのファイルバンドル時にenvを指定することで環境に応じたアプリID定義がimportされるようにする
 - 以下画像のように、各アプリのindex.jsに`import.meta.env.{環境変数KEY}`と記述することで環境に応じた定義が参照可能となる  
-ローカル開発時の`.env.local`ファイルの内容をimportしたい場合は`npm run dev`で対象ファイルが参照される 
+ローカル開発時の`.env.local`ファイルの内容をimportしたい場合は`npm run dev`で対象ファイルが参照される ※.env.localファイルはローカルで開発者が作成すること
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/96976616-c08a-43c9-879a-1391abe9989d)
 
 
