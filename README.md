@@ -74,7 +74,8 @@
 - .envファイルを環境ごとの定義ファイルとして用意し、Viteのファイルバンドル時にenvを指定することで環境に応じたアプリID定義がimportされるようにする
 - 以下画像のように、各アプリのindex.jsに`import.meta.env.{環境変数KEY}`と記述することで環境に応じた定義が参照可能となる  
 ローカル開発時の`.env.local`ファイルの内容をimportしたい場合は`npm run dev`で対象ファイルが参照される 
-![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/ca352ffd-d73f-4be3-b594-cb99a441e800)
+![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/96976616-c08a-43c9-879a-1391abe9989d)
+
 
 
 ### customize-uploaderによる自動デプロイ
