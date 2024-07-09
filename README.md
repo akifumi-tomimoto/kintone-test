@@ -6,7 +6,7 @@
 .
 ├── .github/
 │   ├── workflows/
-│   │   └── upload-action.yml           リポジトリpush時のgithub actions設定を記述
+│   │   └── upload-action.yml           github actions設定を記述
 │   └── pull_request_template.md        Pull Request作成時の初期テンプレートを記述
 ├── src/
 │   ├── apps/                           javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
