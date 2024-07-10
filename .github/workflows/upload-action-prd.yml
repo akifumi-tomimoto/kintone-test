@@ -1,4 +1,4 @@
-name: upload-action
+name: upload-action-prd
 on: 
   workflow_dispatch:
 
