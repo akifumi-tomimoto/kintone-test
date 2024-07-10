@@ -12,5 +12,5 @@ jobs:
           node-version: '20'
       - run: | 
           npm install
-          npm run prd
-          npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }}
+          npm run stg
+          npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }} stg
