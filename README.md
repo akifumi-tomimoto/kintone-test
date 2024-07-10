@@ -6,16 +6,19 @@
 .
 ├── .github/
 │   ├── workflows/
-│   │   └── upload-action.yml           github actions設定を記述
-│   └── pull_request_template.md        Pull Request作成時の初期テンプレートを記述
+│   │   ├── upload-action-prd.yml           production環境のgithub actions設定を記述
+│   │   └── upload-action-stg.yml           staging環境のgithub actions設定を記述
+│   └── pull_request_template.md            Pull Request作成時の初期テンプレートを記述
 ├── src/
-│   ├── apps/                           javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
-│   │   ├── app1/                       ディレクトリ名はアプリが特定できるような名称で定義すること
-│   │   │   ├── index.js                kintoneアプリ単位のjavascript制御を記述
-│   │   │   └── customize-manifest.json kintoneカスタマイズのCSSやJavaScriptファイルをkintoneへ適用できるcustomize-uploaderの設定を記述
+│   ├── apps/                               javascript, cssでの開発が必要なkintoneアプリについて、必要なファイルを定義します
+│   │   ├── app1/                           ディレクトリ名はアプリが特定できるような名称で定義すること
+│   │   │   ├── index.js                    kintoneアプリ単位のjavascript制御を記述
+│   │   │   ├── customize-manifest-prd.json kintoneカスタマイズのCSSやJavaScriptファイルをkintone本番環境へ適用するcustomize-uploaderの設定を記述
+│   │   │   └── customize-manifest-stg.json kintoneカスタマイズのCSSやJavaScriptファイルをkintoneステージング環境へ適用するcustomize-uploaderの設定を記述
 │   │   └── app2/
 │   │       ├── index.js
-│   │       └── customize-manifest.json
+│   │       ├── customize-manifest-prd.json
+│   │       └── customize-manifest-stg.json
 │   └── common/
 │       └── common.js                   全アプリ共通で利用する処理がある場合はこちらで管理する（各index.jsではimportで利用する）
 ├── .env.production                     production環境変数について定義 Viteで利用する場合はプレフィックスに`VITE_`を指定して登録する
@@ -76,8 +79,9 @@
 
 
 
-### customize-uploaderによる自動デプロイ
-- src/apps/{アプリ英名}配下に以下のような形式の`customize-manifest.json`を用意する
+### customize-uploaderによる一括アップロード
+- src/apps/{アプリ英名}配下に以下のような形式の`customize-manifest-{env}.json`を用意する
+- envの値によってuploader.jsでアップロード対象を参照するjsonファイルが切り替えられる
 ```json
 {
   "app": "335",                このapp_idが参照されて対象アプリへアップロードされる
@@ -92,22 +96,13 @@
 }
 ```
 
-## 検証環境へのデプロイフロー
-- Github Pagesの利用を検討。  
-以下画像のような設定でGithub Pagesからファイルをホストティングできるようにする  
-画像はmainブランチを設定しているが、stagingブランチ（検証環境用ブランチ）を指定したほうが良い
-![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/eb5b4dc2-e57d-4a52-8758-ecb4f51e7a3f)
-
-- デプロイされたURL上のファイルを検証環境動作確認用のスペース・アプリで指定できる
-![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/e252a076-36fd-42b0-8aa5-6e7e0e14ebf1)
-
-## 本番環境へのデプロイフロー
+## ステージング・本番環境へのデプロイフロー
 ### 事前準備
 - packagage.jsonのconfig.baseurlにkintoneのドメインを追加
 - secretsにENV_USER_NAMEとENV_USER_PASSWORDを定義する（対象アプリへのファイルアップロードにkintoneアカウントとパスワードが必要）
 ### デプロイフロー定義
-- upload-action.ymlに定義
-- Github Actionsの`run workflow`から実行
+- upload-action-{env}.ymlに定義
+- Github Actionsの`Run Workflow`から環境に応じたアクションを選択し実行
 - 具体的な処理としてはsrc/apps配下のファイルをViteを用いてバンドルし、uploader.jsから対象アプリへアップロードする
 ```
 name: upload-action
@@ -125,23 +120,5 @@ jobs:
       - run: | 
           npm install
           npm run prd
-          npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }}
+          npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }} prd
 ```
-
-### uploader.jsの説明（CopilotChatで生成）
-このJavaScriptコードは、kintone-customize-uploaderを使用して、特定のパターンにマッチするファイルをアップロードするスクリプトです。  
-以下はコードのステップバイステップの説明です：
-
-1. child_processモジュールからexecSync関数をインポートします。
-この関数は、Node.jsの子プロセスを同期的に実行するために使用されます。
-2. globモジュールからglob関数をインポートします。この関数は、ファイルパスのパターンにマッチするファイルを検索するために使用されます。
-3. command変数を定義し、npx kintone-customize-uploaderコマンドにコマンドライン引数から取得したbase-url、username、passwordを追加しています。これは、kintoneのカスタマイズファイルをアップロードするためのコマンドです。
-4. entries変数に、glob.sync関数を使用してsrc/apps/**/customize-manifest.jsonにマッチするファイルのリストを代入します。このパターンは、src/apps/ディレクトリとそのサブディレクトリ内のcustomize-manifest.jsonファイルを対象としています。
-5. entries配列の各ファイルに対して、以下の処理を行うforEachループを実行します：
-   - アップロード中であることを示すメッセージとファイル名をコンソールに出力します。
-   - execSync関数を使用して、command変数にファイルパスを追加したコマンドを実行します。これにより、指定されたファイルがkintoneにアップロードされます。
-   - コマンドの実行結果をコンソールに出力します。
-
-このスクリプトは、kintoneのカスタマイズファイルをバッチでアップロードするために使用され、コマンドラインから実行されることを想定しています。
-コマンドライン引数を通じて、アップロード先のURL、ユーザー名、パスワードを指定します。
-
