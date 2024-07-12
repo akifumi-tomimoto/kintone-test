@@ -122,3 +122,11 @@ jobs:
           npm run prd
           npm run upload --username=${{ secrets.ENV_USER_NAME }} --password=${{ secrets.ENV_USER_PASSWORD }} prd
 ```
+
+## kintoneポータル画面のお知らせ本文のアプリID自動変換
+- 本番リリース後にポータル画面のお知らせ本文内リンクのアプリIDをコピー先のアプリIDへ自動変換する
+### コマンド
+`npm run portal {更新先スペースのドメイン} {更新先スペースのスペースID} {コピー元スペースのドメイン} {コピー元スペースのスペースID} {両スペースの権限を持つkintoneアカウントのログインID:パスワードをbase64エンコードした文字列}`
+
+例）
+`npm run portal https://sample.cybozu.com/ 35 https://sample.cybozu.com/ 29 dHJhaW5pbmcwMDE6YXNuZXQyMDI0dHI=`

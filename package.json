@@ -7,6 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack",
         "env": "babel-node --presets @babel/env -r dotenv/config buildEnv.js",
+        "portal": "babel-node --presets @babel/env -r dotenv/config updatePortal.js",
         "dev": "vite build --mode development",
         "stg": "vite build --mode staging",
         "prd": "vite build --mode production",
