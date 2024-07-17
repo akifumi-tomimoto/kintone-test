@@ -125,8 +125,18 @@ jobs:
 
 ## kintoneポータル画面のお知らせ本文のアプリID自動変換
 - 本番リリース後にポータル画面のお知らせ本文内リンクのアプリIDをコピー先のアプリIDへ自動変換する
-### コマンド
-`npm run portal {更新先スペースのドメイン} {更新先スペースのスペースID} {コピー元スペースのドメイン} {コピー元スペースのスペースID} {両スペースの権限を持つkintoneアカウントのログインID:パスワードをbase64エンコードした文字列}`
+  - 念のため2つのコマンドに分けて実行する
+
+### コピー元の取得・変更後の内容を確認する
+`npm run portal:get {更新先スペースのドメイン} {更新先スペースのスペースID} {更新先スペースの権限を持つkintoneアカウントのログインID:パスワードをbase64エンコードした文字列} {コピー元スペースのドメイン} {コピー元スペースのスペースID} {コピー元スペースの権限を持つkintoneアカウントのログインID:パスワードをbase64エンコードした文字列}`
+- 実行後、new_portal.txtとold_portal.txtが出力されるので差分を確認し、内容に問題ないか目視で判断する
 
 例）
-`npm run portal https://sample.cybozu.com/ 35 https://sample.cybozu.com/ 29 dHJhaW5pbmcwMDE6YXNuZXQyMDI0dHI=`
+`npm run portal:get https://sample2.cybozu.com/ 35 dHJhaW5pbmcwMDI6YXNuZXQyMDI0dHI= https://sample1.cybozu.com/ 29 dHJhaW5pbmcwMDE6YXNuZXQyMDI0dHI=`
+
+### new_portal.txtの内容で更新先ポータルを更新する
+`npm run portal:update {更新先スペースのドメイン} {更新先スペースのスペースID} {更新先スペースの権限を持つkintoneアカウントのログインID:パスワードをbase64エンコードした文字列}`
+- 実行後、new_portal.txtの内容で対象スペースのポータル画面のお知らせ本文が更新されたかどうかを確認する
+
+例）
+`npm run portal:get https://sample2.cybozu.com/ 35 dHJhaW5pbmcwMDI6YXNuZXQyMDI0dHI=`
