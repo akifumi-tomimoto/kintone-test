@@ -7,13 +7,17 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack",
         "env": "babel-node --presets @babel/env -r dotenv/config buildEnv.js",
+        "appIds": "babel-node --presets @babel/env -r dotenv/config buildAppIds.js",
         "portal": "babel-node --presets @babel/env -r dotenv/config updatePortal.js",
+        "portal:get": "babel-node --presets @babel/env -r dotenv/config getPortal.js",
+        "portal:update": "babel-node --presets @babel/env -r dotenv/config updateNewPortal.js",
         "dev": "vite build --mode development",
         "stg": "vite build --mode staging",
         "prd": "vite build --mode production",
         "lint": "eslint src/**/*.js",
         "fix": "eslint src/**/*.js --fix",
-        "upload": "babel-node --presets @babel/env -r dotenv/config uploader.js $npm_package_config_baseurl $npm_config_username $npm_config_password"
+        "upload": "babel-node --presets @babel/env -r dotenv/config uploader.js $npm_package_config_baseurl $npm_config_username $npm_config_password",
+        "upload:manual": "babel-node --presets @babel/env -r dotenv/config uploader.js"
     },
     "config": {
         "baseurl": "https://yrj8z70uvlx8.cybozu.com/"
@@ -56,6 +60,7 @@
         "core-js": "^3.37.1",
         "jquery": "^3.7.1",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "tone": "^15.0.4"
     }
 }
