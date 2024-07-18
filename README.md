@@ -20,15 +20,19 @@
 │   │       ├── customize-manifest-prd.json
 │   │       └── customize-manifest-stg.json
 │   └── common/
-│       └── common.js                   全アプリ共通で利用する処理がある場合はこちらで管理する（各index.jsではimportで利用する）
-├── .env.production                     production環境変数について定義 Viteで利用する場合はプレフィックスに`VITE_`を指定して登録する
-├── .env.staging                        staging環境変数について定義 Viteで利用する場合はプレフィックスに`VITE_`を指定して登録する
-├── .gitignore                          ここに記述されたファイルパターンやディレクトリはgitのトラッキング対象外になります（例）buildされたdistディレクトリやnode_modulesはトラッキングの必要がないので除外
-├── README.md                           リポジトリの利用方法について記載
+│       └── common.js                       全アプリ共通で利用する処理がある場合はこちらで管理する（各index.jsではimportで利用する）
+├── .env.production                         production環境変数について定義 Viteで利用する場合はプレフィックスに`VITE_`を指定して登録する
+├── .env.staging                            staging環境変数について定義 Viteで利用する場合はプレフィックスに`VITE_`を指定して登録する
+├── .gitignore                              ここに記述されたファイルパターンやディレクトリはgitのトラッキング対象外になります（例）buildされたdistディレクトリやnode_modulesはトラッキングの必要がないので除外
+├── appsList.json                           自動生成で環境変数（各アプリに対するアプリID）を生成したい場合定義する
+├── buildEnv.js                             対象スペースに対して、appsList.jsonに定義された設定を参照し環境変数（各アプリに対するアプリID）を.envファイルとして作成する
+├── getPortal.js                            本番リリース時に利用。テンプレート読み込み後のポータル本文の旧・新内容をそれぞれold_portal.txt, new_portal.txtとして出力する
 ├── package-lock.json
-├── package.json                        Node.jsプロジェクトにおける依存関係管理やスクリプトの定義に必要なファイルです。npm install時に参照されます
-├── uploader.js                         対象アプリへjavascript, cssのファイルアップロードを行います
-└── vite.config.js                      Viteの設定を記述
+├── package.json                            Node.jsプロジェクトにおける依存関係管理やスクリプトの定義に必要なファイルです。npm install時に参照されます
+├── README.md                               リポジトリの利用方法について記載
+├── updateNewPortal.js                      getPortal.jsで出力したnew_portal.txtの内容で対象スペースのポータル本文を更新する
+├── uploader.js                             対象アプリへjavascript, cssのファイルアップロードを行います
+└── vite.config.js                          Viteの設定を記述
 ```
 
 ## 事前準備
