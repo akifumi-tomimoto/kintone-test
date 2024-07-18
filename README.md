@@ -77,7 +77,28 @@
 ローカル開発時の`.env.local`ファイルの内容をimportしたい場合は`npm run dev`で対象ファイルが参照される ※.env.localファイルはローカルで開発者が作成すること
 ![image](https://github.com/akifumi-tomimoto/kintone-test/assets/60957697/96976616-c08a-43c9-879a-1391abe9989d)
 
+#### 環境変数の生成
+- appsList.jsonを以下のような"kintoneアプリ名": "環境変数で定義したい変数名"のjson形式で用意しておく
+- kintoneアプリ名は環境変数自動生成の際に、アプリIDと紐づけるkeyになるため正しい値で設定すること
+```
+{
+    "案件管理": "ANKEN",
+    "見積管理": "MITSUMORI",
+    "顧客マスタ": "KOKYAKU",
+    "担当者マスタ": "TANTO"
+}
+```
+- appsList.jsonを設定後、下記コマンドを実行する  
+`npm run env {対象kintoneドメイン} {対象スペースID} {env} {対象スペース権限を持つkintoneアカウントのログインID:パスワードをbase64エンコードした文字列}`  
+例）`npm run env https://sample.cybozu.com/ 20 production dHJhaW5pbmcwMDE6YXNuZXQyMDI0dHI=`
 
+- コマンド実行で以下のような.envファイルが作成される（keyとなるアプリ名が対象スペースに存在しない場合はスキップされる）
+```
+VITE_MITSUMORI=428
+VITE_TANTO=429
+VITE_KOKYAKU=430
+VITE_ANKEN=431
+```
 
 ### customize-uploaderによる一括アップロード
 - src/apps/{アプリ英名}配下に以下のような形式の`customize-manifest-{env}.json`を用意する
